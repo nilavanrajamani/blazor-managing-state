@@ -1,0 +1,36 @@
+﻿@rendermode RenderMode.InteractiveServer
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">BlazingBlog</a>
+    </div>
+</div>
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        @foreach (var post in blogPosts)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="@($"/post/{post.Id}")" Match="NavLinkMatch.All">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> @post.Title
+                </NavLink>
+            </div>
+        }
+        <div class="nav-item px-3">
+            <button class="btn btn-primary" @onclick="AddNewPost">Add New Post</button>
+        </div>
+    </nav>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    private List<BlogPost> blogPosts { get; set; }
+
+    private async Task AddNewPost(MouseEventArgs e)
+    {
+        var newId = blogPosts.Max(p => p.Id) + 1;
+        blogPosts.Add(new BlogPost { Id = newId, Title = $"Post {newId}", Content = $"This is post {newId}" });
+        await Task.CompletedTask;
+    }
+}

@@ -1,0 +1,26 @@
+﻿@page "/post/{PostId:int}"
+
+@if (post is not null)
+{
+    <h2>@post.Title</h2>
+    <p>@post.Content</p>
+}
+else
+{
+    <p>Post not found</p>
+}
+
+@code {
+    [Parameter]
+    public int PostId { get; set; }
+
+    [CascadingParameter]
+    private List<BlogPost> blogPosts { get; set; }
+
+    protected override void OnInitialized()
+    {
+        post = blogPosts.FirstOrDefault(p => p.Id == PostId);
+    }
+
+    private BlogPost? post;
+}

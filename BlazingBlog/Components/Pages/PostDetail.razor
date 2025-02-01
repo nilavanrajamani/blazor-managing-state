@@ -1,4 +1,5 @@
 ﻿@page "/post/{PostId:int}"
+@inject IBlogRepository BlogRepository
 
 @if (post is not null)
 {
@@ -14,12 +15,9 @@ else
     [Parameter]
     public int PostId { get; set; }
 
-    [CascadingParameter]
-    private List<BlogPost> blogPosts { get; set; }
-
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        post = blogPosts.FirstOrDefault(p => p.Id == PostId);
+        post = await BlogRepository.GetPostAsync(PostId);
     }
 
     private BlogPost? post;

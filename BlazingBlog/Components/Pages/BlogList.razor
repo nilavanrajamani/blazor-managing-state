@@ -1,4 +1,5 @@
 ﻿@rendermode RenderMode.InteractiveServer
+@inject IBlogRepository BlogRepository
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -24,13 +25,15 @@
 
 @code {
 
-    [CascadingParameter]
-    private List<BlogPost> blogPosts { get; set; }
+    private List<BlogPost> blogPosts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        blogPosts = await BlogRepository.GetPostsAsync();
+    }
 
     private async Task AddNewPost(MouseEventArgs e)
     {
-        var newId = blogPosts.Max(p => p.Id) + 1;
-        blogPosts.Add(new BlogPost { Id = newId, Title = $"Post {newId}", Content = $"This is post {newId}" });
-        await Task.CompletedTask;
+        await BlogRepository.AddPostAsync(new BlogPost { Title = $"Post {blogPosts.Count + 1}", Content = $"This is post {blogPosts.Count + 1}" });
     }
 }

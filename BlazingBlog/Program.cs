@@ -1,21 +1,16 @@
 using BlazingBlog.Components;
-using BlazingBlog.Models;
+using BlazingBlog.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var blogPosts = new List<BlogPost>
-    {
-        new BlogPost { Id = 1, Title = "First post", Content = "This is the first post" },
-        new BlogPost { Id = 2, Title = "Second post", Content = "This is the second post" },
-        new BlogPost { Id = 3, Title = "Third post", Content = "This is the third post" },
-    };
+
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+    .AddInteractiveServerComponents()
+    .AddInteractiveWebAssemblyComponents();
 
-builder.Services.AddCascadingValue(_ => blogPosts);
-
+builder.Services.AddSingleton<IBlogRepository, BlogRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,6 +27,8 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+    .AddInteractiveServerRenderMode()
+    .AddInteractiveWebAssemblyRenderMode()
+    .AddAdditionalAssemblies(typeof(BlazingBlog.Client._Imports).Assembly);
 
 app.Run();

@@ -1,0 +1,16 @@
+﻿@page "/edit/{PostId:int}"
+
+@rendermode RenderMode.InteractiveWebAssembly
+
+<p>Edit Post</p>
+
+@code {
+    [Parameter]
+    public int PostId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("EditPost component initialized");
+        await base.OnInitializedAsync();
+    }    
+}

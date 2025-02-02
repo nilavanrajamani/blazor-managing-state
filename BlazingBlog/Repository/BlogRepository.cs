@@ -11,6 +11,8 @@ namespace BlazingBlog.Shared.Repository
                 new BlogPost { Id = 3, Title = "Third post", Content = "This is the third post" },
             };
 
+        public event Action OnStateChanged;
+
         public Task<List<BlogPost>> GetPostsAsync()
         {
             return Task.FromResult(_posts);
@@ -25,7 +27,7 @@ namespace BlazingBlog.Shared.Repository
         public Task<BlogPost> AddPostAsync(BlogPost post)
         {
             post.Id = _posts.Count > 0 ? _posts.Max(p => p.Id) + 1 : 1;
-            _posts.Add(post);
+            _posts.Add(post);            
             return Task.FromResult(post);
         }
 
@@ -37,6 +39,8 @@ namespace BlazingBlog.Shared.Repository
                 existingPost.Title = post.Title;
                 existingPost.Content = post.Content;
             }
+
+            OnStateChanged.Invoke();
             return Task.FromResult(existingPost);
         }
 
@@ -48,6 +52,6 @@ namespace BlazingBlog.Shared.Repository
                 _posts.Remove(post);
             }
             return Task.CompletedTask;
-        }
+        }        
     }
 }

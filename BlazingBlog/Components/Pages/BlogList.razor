@@ -30,10 +30,22 @@
     protected override async Task OnInitializedAsync()
     {
         blogPosts = await BlogRepository.GetPostsAsync();
+        BlogRepository.OnStateChanged += () =>
+        {
+            InvokeAsync(StateHasChanged);
+        };
     }
 
     private async Task AddNewPost(MouseEventArgs e)
     {
         await BlogRepository.AddPostAsync(new BlogPost { Title = $"Post {blogPosts.Count + 1}", Content = $"This is post {blogPosts.Count + 1}" });
+    }
+
+    public void Dispose()
+    {
+        BlogRepository.OnStateChanged -= () =>
+        {
+            InvokeAsync(StateHasChanged);
+        };
     }
 }

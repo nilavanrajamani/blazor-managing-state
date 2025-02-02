@@ -9,5 +9,6 @@ namespace BlazingBlog.Shared
         Task<BlogPost> AddPostAsync(BlogPost post);
         Task<BlogPost> UpdatePostAsync(BlogPost post);
         Task DeletePostAsync(int id);
+        event Action OnStateChanged;
     }
 }

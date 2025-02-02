@@ -1,6 +1,5 @@
 ﻿using BlazingBlog.Shared;
 using BlazingBlog.Shared.Models;
-using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace BlazingBlog.Client.Repository
@@ -13,6 +12,8 @@ namespace BlazingBlog.Client.Repository
         {
             _httpClient = httpClient;
         }
+
+        public event Action OnStateChanged;
 
         public async Task<BlogPost> AddPostAsync(BlogPost post)
         {

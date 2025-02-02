@@ -1,57 +1,61 @@
-﻿using BlazingBlog.Shared.Models;
+﻿using BlazingBlog.Repository;
+using BlazingBlog.Shared.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazingBlog.Shared.Repository
 {
     public class BlogRepository : IBlogRepository
     {
-        private List<BlogPost> _posts = new List<BlogPost>
-            {
-                new BlogPost { Id = 1, Title = "First post", Content = "This is the first post" },
-                new BlogPost { Id = 2, Title = "Second post", Content = "This is the second post" },
-                new BlogPost { Id = 3, Title = "Third post", Content = "This is the third post" },
-            };
+        private readonly BlogDbContext _dbContext;
+
+        public BlogRepository(BlogDbContext blogDbContext)
+        {
+            _dbContext = blogDbContext;
+        }
 
         public event Action OnStateChanged;
 
-        public Task<List<BlogPost>> GetPostsAsync()
+        public async Task<List<BlogPost>> GetPostsAsync()
         {
-            return Task.FromResult(_posts);
+            return await _dbContext.Posts.ToListAsync();
         }
 
-        public Task<BlogPost> GetPostAsync(int id)
+        public async Task<BlogPost> GetPostAsync(int id)
         {
-            var post = _posts.FirstOrDefault(p => p.Id == id);
-            return Task.FromResult(post);
+            return await _dbContext!.Posts!.FirstOrDefaultAsync(p => p.Id == id);            
         }
 
-        public Task<BlogPost> AddPostAsync(BlogPost post)
-        {
-            post.Id = _posts.Count > 0 ? _posts.Max(p => p.Id) + 1 : 1;
-            _posts.Add(post);            
-            return Task.FromResult(post);
+        public async Task<BlogPost> AddPostAsync(BlogPost post)
+        {            
+            await _dbContext.Posts.AddAsync(post);
+            await _dbContext.SaveChangesAsync();
+            OnStateChanged.Invoke();
+            return post;
         }
 
-        public Task<BlogPost> UpdatePostAsync(BlogPost post)
+        public async Task<BlogPost> UpdatePostAsync(BlogPost post)
         {
-            var existingPost = _posts.FirstOrDefault(p => p.Id == post.Id);
+            var existingPost = await _dbContext.Posts.FirstOrDefaultAsync(p => p.Id == post.Id);
             if (existingPost != null)
             {
                 existingPost.Title = post.Title;
                 existingPost.Content = post.Content;
             }
+            _dbContext.Entry(existingPost).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
 
             OnStateChanged.Invoke();
-            return Task.FromResult(existingPost);
+            return existingPost;
         }
 
-        public Task DeletePostAsync(int id)
+        public async Task DeletePostAsync(int id)
         {
-            var post = _posts.FirstOrDefault(p => p.Id == id);
+            var post = await _dbContext.Posts.FirstOrDefaultAsync(p => p.Id == id);
             if (post != null)
             {
-                _posts.Remove(post);
+                _dbContext.Posts.Remove(post);
+                await _dbContext.SaveChangesAsync();
             }
-            return Task.CompletedTask;
         }        
     }
 }

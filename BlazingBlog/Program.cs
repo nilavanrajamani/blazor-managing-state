@@ -1,9 +1,9 @@
 using BlazingBlog.Components;
-using BlazingBlog.Repository;
+using BlazingBlog.Extensions;
+using BlazingBlog.Shared;
+using BlazingBlog.Shared.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -21,6 +21,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseBlogApi();
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();

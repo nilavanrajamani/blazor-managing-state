@@ -1,6 +1,6 @@
-﻿using BlazingBlog.Models;
+﻿using BlazingBlog.Shared.Models;
 
-namespace BlazingBlog.Repository
+namespace BlazingBlog.Shared.Repository
 {
     public class BlogRepository : IBlogRepository
     {

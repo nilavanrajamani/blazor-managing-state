@@ -1,4 +1,4 @@
-﻿namespace BlazingBlog.Models
+﻿namespace BlazingBlog.Shared.Models
 {
     public class BlogPost
     {

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazingBlog", "BlazingBlog\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazingBlog.Client", "BlazingBlog.Client\BlazingBlog.Client.csproj", "{47AE82E5-1040-4351-BFBB-69B84477DBFA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazingBlog.Shared", "BlazingBlog.Shared\BlazingBlog.Shared.csproj", "{8B387402-DED7-413B-BF24-814A57FB5A7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{47AE82E5-1040-4351-BFBB-69B84477DBFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47AE82E5-1040-4351-BFBB-69B84477DBFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47AE82E5-1040-4351-BFBB-69B84477DBFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B387402-DED7-413B-BF24-814A57FB5A7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B387402-DED7-413B-BF24-814A57FB5A7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B387402-DED7-413B-BF24-814A57FB5A7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B387402-DED7-413B-BF24-814A57FB5A7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

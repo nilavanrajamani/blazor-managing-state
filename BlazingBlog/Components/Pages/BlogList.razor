@@ -1,5 +1,6 @@
 ﻿@rendermode RenderMode.InteractiveServer
 @inject IBlogRepository BlogRepository
+@inject BlogStateService BlogStateService
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -30,8 +31,9 @@
     protected override async Task OnInitializedAsync()
     {
         blogPosts = await BlogRepository.GetPostsAsync();
-        BlogRepository.OnStateChanged += () =>
+        BlogStateService.OnStateChanged += async () =>
         {
+            blogPosts = await BlogRepository.GetPostsAsync();
             InvokeAsync(StateHasChanged);
         };
     }
@@ -43,7 +45,7 @@
 
     public void Dispose()
     {
-        BlogRepository.OnStateChanged -= () =>
+        BlogStateService.OnStateChanged -= () =>
         {
             InvokeAsync(StateHasChanged);
         };

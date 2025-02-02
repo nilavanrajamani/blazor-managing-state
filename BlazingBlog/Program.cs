@@ -3,6 +3,7 @@ using BlazingBlog.Extensions;
 using BlazingBlog.Repository;
 using BlazingBlog.Shared;
 using BlazingBlog.Shared.Repository;
+using BlazingBlog.State;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,8 +13,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
-builder.Services.AddScoped<IBlogRepository, BlogRepository>();
-builder.Services.AddDbContext<BlogDbContext>(options => options.UseSqlite("Data Source=blazingblog.db"));
+builder.Services.AddSingleton<IBlogRepository, BlogRepository>();
+builder.Services.AddSingleton<BlogStateService>();
+builder.Services.AddDbContextFactory<BlogDbContext>(options => options.UseSqlite("Data Source=blazingblog.db"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
